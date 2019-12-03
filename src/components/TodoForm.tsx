@@ -10,7 +10,10 @@ const TodoForm = () => {
     const [inputText, setInputText] = useState('')
 
     const add = () => {
-        stateContext.mutations.addTodo({ text: inputText, complete: false, id: Math.random().toString() })
+        stateContext.mutations.addTodo({
+            text: inputText,
+            complete: false, id: Math.random().toString()
+        })
         setInputText('')
     }
 
@@ -20,7 +23,7 @@ const TodoForm = () => {
             <form>
                 <input value={inputText} onChange={(e) => setInputText(e.target.value)} />
                 <button type="button" onClick={add}>Novo</button>
-                <button type="button" onClick={stateContext.mutations.fetchPromise}>Async Promise</button>
+                <button type="button" onClick={stateContext.mutations.fetch}>Async Promise</button>
                 <button type="button" onClick={stateContext.mutations.reset}>RESET</button>
             </form>
         </section>

@@ -48,7 +48,7 @@ const error:Method<StateTodo, any> = (state, payload)=>({
     ...state,
 })
 
-export const fetchPromise:Service<StateTodo> = () =>
+const fetch:Service<StateTodo> = () =>
     Axios.get('http://www.hackintoshworld.com/wp-json/wp/v2/posts')
     .then(resp => state.mutations.success(resp.data))
     .catch(err => state.mutations.error(err.data))
@@ -66,7 +66,7 @@ export const state = new State({
         error
     },
     services:{
-        fetchPromise
+        fetch
     }
 })
 
