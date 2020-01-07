@@ -1,5 +1,5 @@
 import Axios from "axios";
-import {Service, Method, State} from 'infinity-state'
+import { Method, State, Service } from 'infinity-state'
 
 export type TodoType = {
     id: string
@@ -17,17 +17,17 @@ const INITIAL_STATE: StateTodo = {
     loading: false
 };
 
-const removeTodo: Method<StateTodo, string> = (state, payload) => ({
+const removeTodo: Method<StateTodo, string> = ({ state, payload }) => ({
     ...state,
     todos: state.todos.filter(item => item.id !== payload)
 })
 
-const addTodo: Method<StateTodo, TodoType> = (state, payload) => ({
+const addTodo: Method<StateTodo, TodoType> = ({ state, payload }) => ({
     ...state,
     todos: state.todos.concat(payload)
 })
 
-const toggleTodo: Method<StateTodo, string> = (state, payload) => ({
+const toggleTodo: Method<StateTodo, string> = ({ state, payload }) => ({
     ...state,
     todos: state.todos.map(item => ({
         ...item,
@@ -35,7 +35,7 @@ const toggleTodo: Method<StateTodo, string> = (state, payload) => ({
     }))
 })
 
-const success: Method<StateTodo, Array<any>> = (state, payload) => ({
+const success: Method<StateTodo, Array<any>> = ({ state, payload }) => ({
     ...state,
     todos: [...state.todos, ...payload.map((item: any) => ({
         id: item.id,
@@ -44,18 +44,19 @@ const success: Method<StateTodo, Array<any>> = (state, payload) => ({
     }))]
 })
 
-const error:Method<StateTodo, any> = (state, payload)=>({
+const error: Method<StateTodo, any> = ({ state, payload }) => ({
     ...state,
 })
 
-const fetch:Service<StateTodo> = () =>
+const fetch: Service<StateTodo> = () =>
     Axios.get('http://www.hackintoshworld.com/wp-json/wp/v2/posts')
-    .then(resp => state.mutations.success(resp.data))
-    .catch(err => state.mutations.error(err.data))
+        .then(resp => context.mutations.success(resp.data))
+        .catch(err => context.mutations.error(err.data))
+
 
 const reset = () => INITIAL_STATE
 
-export const state = new State({
+export const context = new State({
     state: INITIAL_STATE,
     methods: {
         addTodo,
@@ -65,7 +66,7 @@ export const state = new State({
         success,
         error
     },
-    services:{
+    services: {
         fetch
     }
 })

@@ -1,17 +1,14 @@
-
-
 import "./../styles.css";
 import React from "react";
-import { state as stateContext, TodoType } from "../state/state";
+import { context } from "../state/state";
 import { useMutation } from "infinity-state";
 
 const TodoList = () => {
 
   const state= useMutation(
-    stateContext,
+    context,
     state => state.todos
   )
-
 
   return (
     <section>
@@ -20,8 +17,8 @@ const TodoList = () => {
           <li key={todo.id}>
             {todo.complete ? <s>{todo.text}</s> : todo.text}
             <div>
-              <button onClick={() => stateContext.mutations.toggleTodo(todo.id)}>Toggle</button>
-              <button onClick={() => stateContext.mutations.removeTodo(todo.id)} >Remove</button>
+              <button onClick={() => context.mutations.toggleTodo(todo.id)}>Toggle</button>
+              <button onClick={() => context.mutations.removeTodo(todo.id)} >Remove</button>
             </div>
           </li>
         ))}
