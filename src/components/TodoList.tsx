@@ -1,11 +1,13 @@
 import "./../styles.css";
 import React from "react";
 import { context } from "../state/state";
-import { useMutation } from "infinity-state";
+import { useIState } from "infinity-state";
 
 const TodoList = () => {
 
-  const state= useMutation(
+  const { toggleTodo, removeTodo } = context.mutations
+
+  const todos = useIState(
     context,
     state => state.todos
   )
@@ -13,12 +15,18 @@ const TodoList = () => {
   return (
     <section>
       <ul>
-        {Array.isArray(state) && state.map((todo: any) => (
+        {todos.map(todo => (
           <li key={todo.id}>
             {todo.complete ? <s>{todo.text}</s> : todo.text}
             <div>
-              <button onClick={() => context.mutations.toggleTodo(todo.id)}>Toggle</button>
-              <button onClick={() => context.mutations.removeTodo(todo.id)} >Remove</button>
+              <button
+                onClick={() => toggleTodo(todo.id)}>
+                Toggle
+                </button>
+              <button
+                onClick={() => removeTodo(todo.id)} >
+                Remove
+                </button>
             </div>
           </li>
         ))}
@@ -29,4 +37,5 @@ const TodoList = () => {
 
 export default TodoList;
 
+//state management react #redux #react #javascript   #100DaysOfCode https://github.com/Jucian0/infinity-state
 
