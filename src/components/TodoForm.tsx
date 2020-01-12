@@ -17,7 +17,7 @@ const TodoForm = () => {
 
     return (
         <section>
-            <h2>RMS -> Reactive Management State</h2>
+            <h2>Infinity State</h2>
             <form>
                 <input value={inputText} onChange={(e) => setInputText(e.target.value)} />
                 <button type="button" onClick={add}>Novo</button>
