@@ -1,7 +1,7 @@
 import "./../styles.css";
 import React from "react";
 import { context } from "../state/state";
-import { useIState } from "infinity-state";
+import { useIState } from "./../lib";
 
 const TodoList = () => {
 

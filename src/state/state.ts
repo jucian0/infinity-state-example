@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { Method, State, Service } from 'infinity-state'
+import { Method, state, Service } from './../lib'
 
 export type TodoType = {
     id: string
@@ -44,7 +44,7 @@ const success: Method<StateTodo, Array<any>> = ({ state, payload }) => ({
     }))]
 })
 
-const error: Method<StateTodo, any> = ({ state, payload }) => ({
+const error: Method<StateTodo, string> = ({ state, payload }) => ({
     ...state,
 })
 
@@ -56,7 +56,7 @@ const fetch: Service<StateTodo> = () =>
 
 const reset = () => INITIAL_STATE
 
-export const context = new State({
+export const context = state({
     state: INITIAL_STATE,
     methods: {
         addTodo,
