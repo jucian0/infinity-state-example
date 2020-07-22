@@ -13,60 +13,80 @@ In the project directory, you can run:
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+```TSX
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  const [todosState, { toggleTodo, removeTodo }] = useMState(context)
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+  const [todos, { toggleTodo, removeTodo }] = useMState(context, state=> state.todos)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  useSubscribe(context, "toggleTodo", () => {
+    //execute side effect when async actions happen
+  })
+  
+```
 
-### `npm run eject`
+```Typescript
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+const INITIAL_STATE: StateTodo = {
+    todos: [],
+    loading: false
+};
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+const removeTodo: Method<StateTodo, string> = ({ state, payload }) => ({
+    ...state,
+    todos: state.todos.filter(item => item.id !== payload)
+})
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+const addTodo: Method<StateTodo, TodoType> = ({ state, payload }) => ({
+    ...state,
+    todos: state.todos.concat(payload)
+})
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+const toggleTodo: Method<StateTodo, string> = ({ state, payload }) => ({
+    ...state,
+    todos: state.todos.map(item => ({
+        ...item,
+        complete: item.id === payload ? !item.complete : item.complete
+    }))
+})
 
-## Learn More
+const success: Method<StateTodo, Array<any>> = ({ state, payload }) => ({
+    ...state,
+    todos: [...state.todos, ...payload.map((item: any) => ({
+        id: item.id,
+        text: item.slug,
+        complete: false
+    }))]
+})
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+const error: Method<StateTodo, string> = ({ state }) => ({
+    ...state,
+})
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+const fetch: Service<StateTodo> = () =>
+    Axios.get('http://www.hackintoshworld.com/wp-json/wp/v2/posts')
+        .then(resp => context.mutations.success(resp.data))
+        .catch(err => context.mutations.error(err.data))
 
-### Code Splitting
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+const reset = () => INITIAL_STATE
 
-### Analyzing the Bundle Size
+export const context = state({
+    state: INITIAL_STATE,
+    methods: {
+        addTodo,
+        removeTodo,
+        toggleTodo,
+        reset,
+        success,
+        error
+    },
+    services: {
+        fetch
+    }
+})
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+```
