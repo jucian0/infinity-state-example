@@ -1,13 +1,15 @@
 import "./../styles.css";
 import React from "react";
 import { context } from "../state/state";
-import { useIState, useMState } from "./../lib";
+import { useMState, useSubscribe } from "./../lib";
 
 const TodoList = () => {
 
-  // const { toggleTodo, removeTodo } = context.mutations
-
   const [todos, { toggleTodo, removeTodo }] = useMState(context)
+
+  useSubscribe(context, "toggleTodo", () => {
+    //execute side effect when async actions happen
+  })
 
   return (
     <section>
@@ -33,6 +35,4 @@ const TodoList = () => {
 }
 
 export default TodoList;
-
-//state management react #redux #react #javascript   #100DaysOfCode https://github.com/Jucian0/infinity-state
 

@@ -160,6 +160,14 @@ export class State<
 }
 
 
-export const state = <TObject extends ObjectContext<TObject["state"]>>(param: TObject) => new State(param)
+export const state = <TObject extends ObjectContext<TObject["state"]>>(param: TObject) => {
+  const instance = new State(param)
 
-export type TState = typeof State
+  return {
+    mutations: instance.mutations,
+    state: instance.state,
+    subscribe: (fn: Subscribe<TObject['state']>) => instance.subscribe(fn),
+  }
+}
+
+export type TState = ReturnType<typeof state>
