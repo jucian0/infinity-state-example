@@ -17,7 +17,7 @@ import { ObjectContext, State } from './state';
 // };
 
 
-export function useMState<TContext extends typeof instanceof State<ObjectContext<TContext>>, TR > (stateContext: TContext, fn ?: (state: TContext['state']) => TR): [typeof fn extends Function ? TR : TContext['state'], TContext["mutations"]] {
+export function useMState<TContext extends State<ObjectContext<TContext>>, TR>(stateContext: TContext, fn?: (state: TContext['state']) => TR): [typeof fn extends Function ? TR : TContext['state'], TContext["mutations"]] {
 
   const [state, setState] = useState<TContext['state']>(stateContext.state);
 
@@ -32,5 +32,3 @@ export function useMState<TContext extends typeof instanceof State<ObjectContext
 
   return [filteredState, { ...stateContext.mutations }]
 }
-
-// let d = RefObject<RefFieldElement extends RefObject<infer Ref> ? Ref : never>
