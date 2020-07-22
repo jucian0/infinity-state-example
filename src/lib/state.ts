@@ -75,7 +75,7 @@ export interface ObjectContext<TState> {
  *
  * @param  {TObjectContext} objectContext Context is an object that contains all its methods, services and initial state and name your state.
  */
-class State<
+export class State<
   TObjectContext extends ObjectContext<TObjectContext['state']>
   > {
   private objectContext: TObjectContext;
@@ -161,3 +161,5 @@ class State<
 
 
 export const state = <TObject extends ObjectContext<TObject["state"]>>(param: TObject) => new State(param)
+
+export type TState = typeof State

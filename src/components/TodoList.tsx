@@ -1,21 +1,18 @@
 import "./../styles.css";
 import React from "react";
 import { context } from "../state/state";
-import { useIState } from "./../lib";
+import { useIState, useMState } from "./../lib";
 
 const TodoList = () => {
 
-  const { toggleTodo, removeTodo } = context.mutations
+  // const { toggleTodo, removeTodo } = context.mutations
 
-  const todos = useIState(
-    context,
-    state => state.todos
-  )
+  const [todos, { toggleTodo, removeTodo }] = useMState(context)
 
   return (
     <section>
       <ul>
-        {todos.map(todo => (
+        {todos.todos.map((todo: any) => (
           <li key={todo.id}>
             {todo.complete ? <s>{todo.text}</s> : todo.text}
             <div>
