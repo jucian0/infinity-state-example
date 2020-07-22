@@ -44,7 +44,7 @@ const success: Method<StateTodo, Array<any>> = ({ state, payload }) => ({
     }))]
 })
 
-const error: Method<StateTodo, string> = ({ state, payload }) => ({
+const error: Method<StateTodo, string> = ({ state }) => ({
     ...state,
 })
 
