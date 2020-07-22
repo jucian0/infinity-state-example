@@ -80,11 +80,13 @@ export class State<
   > {
   private objectContext: TObjectContext;
   private subscribers: Array<Subscribe<TObjectContext['state']>>;
+  private subscribersAction: Array<{ event: string, callback: () => void }>;
   public mutations: Mutations<TObjectContext['methods']> & Mutations<TObjectContext['services']>;
 
   constructor(objectContext: TObjectContext) {
     this.objectContext = objectContext;
     this.subscribers = [];
+    this.subscribersAction = [];
     this.mutations = {
       ...this.mutationCreator(objectContext.methods),
       ...this.effectsCreator(objectContext.services)
@@ -128,8 +130,22 @@ export class State<
     };
   }
 
+  subscribeInAction(event: string, callback: () => void) {
+    this.subscribersAction = [...this.subscribersAction, { event, callback }]
+
+    return () => {
+      this.subscribersAction = this.subscribersAction.filter(sub => sub.callback === callback)
+    }
+  }
+
+  private notifyAction(event: string) {
+    this.subscribersAction.filter(sub => sub.event === event).forEach(sub => sub.callback())
+  }
+
   private dispatch(type: string, payload: any) {
     const state = this.reduce(this.objectContext.state, { type, payload });
+
+    this.notifyAction(type)
 
     if (!state) {
       throw new Error('Reducer functions must return a value');
@@ -167,6 +183,7 @@ export const state = <TObject extends ObjectContext<TObject["state"]>>(param: TO
     mutations: instance.mutations,
     state: instance.state,
     subscribe: (fn: Subscribe<TObject['state']>) => instance.subscribe(fn),
+    subscribeInAction: (event: string, fn: () => void) => instance.subscribeInAction(event, fn)
   }
 }
 

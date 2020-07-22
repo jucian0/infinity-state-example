@@ -21,4 +21,13 @@ export function useMState<TContext extends TState, TR = TContext["state"]>(state
 
 export function useSubscribe<TContext extends TState>(context: TContext, event: keyof TContext["mutations"], fn: () => void) {
 
+  useEffect(() => {
+
+    const subscription = context.subscribeInAction(event as string, fn)
+
+    return () => {
+      subscription()
+    }
+
+  }, [])
 }

@@ -5,16 +5,19 @@ import { useMState, useSubscribe } from "./../lib";
 
 const TodoList = () => {
 
-  const [todos, { toggleTodo, removeTodo }] = useMState(context)
+
+  const [todos, { toggleTodo, removeTodo }] = useMState(context, state => state.todos)
+
 
   useSubscribe(context, "toggleTodo", () => {
     //execute side effect when async actions happen
+    console.log("toggleTodo")
   })
 
   return (
     <section>
       <ul>
-        {todos.todos.map((todo: any) => (
+        {todos.map((todo: any) => (
           <li key={todo.id}>
             {todo.complete ? <s>{todo.text}</s> : todo.text}
             <div>
