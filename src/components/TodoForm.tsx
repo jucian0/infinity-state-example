@@ -16,7 +16,12 @@ const TodoForm = () => {
     }
 
     const getTodos = async () => {
-        await context.mutations.fetch()
+        try {
+            const data = await context.mutations.fetch()
+            console.log(data)
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     return (

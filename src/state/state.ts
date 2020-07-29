@@ -49,7 +49,7 @@ const error: Method<StateTodo, string> = ({ state, payload }) => ({
 })
 
 const fetch: Service<StateTodo> = () =>
-    Axios.get('http://www.hackintoshworld.com/wp-json/wp/v2/postsa')
+    Axios.get('http://www.hackintoshworld.com/wp-json/wp/v2/posts')
         .then(resp => context.mutations.success(resp.data))
         .catch(err => context.mutations.error(err.data))
 

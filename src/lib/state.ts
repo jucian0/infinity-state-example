@@ -156,6 +156,11 @@ export class State<
     this.subscribers.forEach((fn: (state: TObjectContext['state']) => void) => {
       fn(this.state);
     });
+
+    return {
+      type,
+      payload
+    }
   }
 
   private reduce(
