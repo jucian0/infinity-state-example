@@ -44,15 +44,14 @@ const success: Method<StateTodo, Array<any>> = ({ state, payload }) => ({
     }))]
 })
 
-const error: Method<StateTodo, string> = ({ state }) => ({
+const error: Method<StateTodo, string> = ({ state, payload }) => ({
     ...state,
 })
 
 const fetch: Service<StateTodo> = () =>
-    Axios.get('http://www.hackintoshworld.com/wp-json/wp/v2/posts')
+    Axios.get('http://www.hackintoshworld.com/wp-json/wp/v2/postsa')
         .then(resp => context.mutations.success(resp.data))
         .catch(err => context.mutations.error(err.data))
-
 
 const reset = () => INITIAL_STATE
 

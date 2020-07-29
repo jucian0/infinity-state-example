@@ -15,13 +15,17 @@ const TodoForm = () => {
         setInputText('')
     }
 
+    const getTodos = async () => {
+        await context.mutations.fetch()
+    }
+
     return (
         <section>
             <h2>Infinity State</h2>
             <form>
                 <input value={inputText} onChange={(e) => setInputText(e.target.value)} />
                 <button type="button" onClick={add}>Novo</button>
-                <button type="button" onClick={context.mutations.fetch}>Async Promise</button>
+                <button type="button" onClick={getTodos}>Async Promise</button>
                 <button type="button" onClick={context.mutations.reset}>RESET</button>
             </form>
         </section>

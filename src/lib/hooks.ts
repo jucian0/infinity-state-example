@@ -19,7 +19,7 @@ export function useMState<TContext extends TState, TR = TContext["state"]>(state
 }
 
 
-export function useSubscribe<TContext extends TState>(context: TContext, event: keyof TContext["mutations"], fn: () => void) {
+export function useOnDispatch<TContext extends TState>(context: TContext, event: keyof TContext["mutations"], fn: () => void) {
 
   useEffect(() => {
 

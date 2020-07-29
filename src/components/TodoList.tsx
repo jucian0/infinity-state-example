@@ -1,16 +1,13 @@
 import "./../styles.css";
 import React from "react";
 import { context } from "../state/state";
-import { useMState, useSubscribe } from "./../lib";
+import { useMState, useOnDispatch } from "./../lib";
 
 const TodoList = () => {
 
-
   const [todos, { toggleTodo, removeTodo }] = useMState(context, state => state.todos)
 
-
-  useSubscribe(context, "toggleTodo", () => {
-    //execute side effect when async actions happen
+  useOnDispatch(context, "toggleTodo", () => {
     console.log("toggleTodo")
   })
 
