@@ -76,7 +76,7 @@ const reset = () => INITIAL_STATE
 
 export const context = state({
     state: INITIAL_STATE,
-    methods: {
+    sync: {
         addTodo,
         removeTodo,
         toggleTodo,
@@ -84,7 +84,7 @@ export const context = state({
         success,
         error
     },
-    services: {
+    async: {
         fetch
     }
 })
